@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors - using your specific hex codes */
+  --color-terminal-black: #000000;
+  --color-terminal-zinc-950: #09090b;
+  --color-terminal-zinc-900: #18181b;
+  --color-terminal-zinc-800: #27272a;
+  --color-terminal-zinc-400: #a1a1aa;
+  
+  --color-neon: #39FF14;
+  --color-neon-glow: rgba(57, 255, 20, 0.15);
+
+  /* Fonts */
+  --font-sans: "Space Grotesk", sans-serif;
+  --font-mono: "Space Grotesk Mono", monospace;
+
+  /* Letter Spacing */
+  --tracking-tighter: -0.05em;
+  --tracking-widest: 0.2em;
+}
+
+/* --- Your Custom Utilities --- */
+
+@utility card {
+  @apply bg-terminal-zinc-900 border border-terminal-zinc-800 rounded-lg p-6 shadow-xl;
+}
+
+@utility neon-glow-hover {
+  @apply transition-all duration-300;
+  &:hover {
+    box-shadow: 0 0 20px var(--color-neon-glow);
+  }
+}
+
+@utility btn-primary {
+  @apply bg-neon text-black font-bold px-6 py-2 rounded 
+         uppercase tracking-widest transition-all
+         hover:brightness-110 active:scale-95
+         inline-flex items-center justify-center cursor-pointer;
+}
+
+@utility terminal-header {
+  @apply font-mono text-xs uppercase text-terminal-zinc-400;
+  letter-spacing: 0.3em;
+}
