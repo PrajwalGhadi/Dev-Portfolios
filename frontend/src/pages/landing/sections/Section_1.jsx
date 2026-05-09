@@ -26,7 +26,8 @@ const Section_1 = ({landing}) => {
 
       <div className="flex justify-center items-center lg:w-[50%]">
         {/* Card */}
-        <div className="w-fit bg-[#0F141A] shadow-[#3b5a54] animate-pulse shadow-2xl backdrop-blur-2xl p-6 sm:p-6 md:p-5 lg:p-4 rounded-lg space-y-4">
+
+        <div className="w-fit bg-[#0F141A] shadow-[#3b5a54] shadow-2xl backdrop-blur-2xl p-6 sm:p-6 md:p-5 lg:p-4 rounded-lg space-y-4">
           {/* Name and Devlink */}
           <div className="flex gap-2">
             <img

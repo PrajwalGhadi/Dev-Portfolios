@@ -5,7 +5,7 @@ const authContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState();
 
   const getUser = async () => {
     try {
@@ -25,8 +25,8 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
+      console.log("User data fetched:", data);
       setUser(data.user);
-
       return data;
     } catch (error) {
       setError(error.message);
@@ -38,22 +38,23 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      setLoading(true);
-
+      setLoading(true)
       const response = await fetch("http://localhost:5000/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
-        credentials: "include",
+        credentials: "include"
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        setError(`Login failed: ${response.statusText}`);
-        throw new Error(`Login failed: ${response.statusText}`);
+        console.log("Login failed response:", data);
+        setError(data.errors)
+        return data
       }
 
+      console.log(response);
       return await getUser();
     } catch (error) {
       setError(error.message);
@@ -64,27 +65,28 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (credentials) => {
-    try {
-      setLoading(true);
-
+       try {
+      setLoading(true)
       const response = await fetch("http://localhost:5000/auth/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
-        credentials: "include",
+        credentials: "include"
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        setError(`Registration failed: ${response.statusText}`);
-        throw new Error(`Registration failed: ${response.statusText}`);
+        console.log("Login failed response:", data);
+        !error ? setError([...data.errors]) : setError(prev => prev.push(...data.errors));
+        return data
       }
 
+      console.log(response);
       return await getUser();
     } catch (error) {
-      setError(error.message);
-      throw new Error(`Registration failed: ${error.message}`);
+      setError([...data.errors]);
+      throw new Error(`Login failed: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -115,13 +117,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const clearError = () => setError(null);
+
   const value = {
     user,
     loading,
     error,
+    setError,
     login,
     register,
     logout,
+    clearError
   };
 
   return <authContext.Provider value={value}>{children}</authContext.Provider>;

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middlewares/auth.middleware');
+const authValidator = require('../middlewares/auth.validator');
 const {register, login, logout, updateUser, deleteUser, getUser} = require('../controllers/auth.controller');
 
 // Backend Health Check Route
@@ -9,8 +10,8 @@ router.get('/healthCheck', (req, res)=> {
 })
 
 // Public Routes - No Authentication Required
-router.post('/register', register);
-router.post('/login', login);
+router.post('/register', authValidator.validateRegister, register);
+router.post('/login', authValidator.validateLogin, login);
 
 // Protected Routes - Require Authentication
 router.get('/logout', authMiddleware, logout);
